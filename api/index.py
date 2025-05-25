@@ -1,15 +1,19 @@
-import os
 from flask import Flask, request
-import telebot
+import os
+import sys
+import importlib
 
-API_TOKEN = os.getenv('BOT_TOKEN')  # Ensure this environment variable is set in Vercel
-bot = telebot.TeleBot(API_TOKEN)
+# Add root directory to path so we can import main.py
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from main import bot  # Import your bot instance from main.py
+
 app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = telebot.types.Update.de_json(json_str)
+    json_str = request.get_data().decode('utf-8')
+    update = bot.types.Update.de_json(json_str)
     bot.process_new_updates([update])
     return '!', 200
 
