@@ -45,6 +45,3 @@ import reports
 import broadcasting.bcast
 import locks
 import telebot
-
-
-bot.infinity_polling()
